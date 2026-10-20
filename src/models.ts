@@ -174,8 +174,54 @@ export class BasePokemon{
 
 
 
+class DetailedPokemon extends BasePokemon{
+    private _weightKg : number;
+    private _imageUrl: string;
+    private _types: PokemonType[];
+    private _stats : Stat[];
+    private _cryUrl : string;
+
+
+    constructor(data: IPokeApiDetail, url: string) {
+        super({ name: data.name, url });
+        this._weightKg = data.weight / 10;
+        this._imageUrl =data.sprites.front_default || "" ;
+        this._types = data.types
+            .map((t) => Object.hasOwn(POKEMON_TYPES, t.type.name)
+                ? POKEMON_TYPES[t.type.name as PokemonTypeName]
+                : undefined)
+            .filter((type): type is PokemonType => type !== undefined);
+        this._stats = data.stats.map((s): Stat => [s.stat.name, s.base_stat]);
+        this._cryUrl = data.cries?.latest || "";
+    }
+
+
+    get weightKg(): number {
+        return this._weightKg;
+    }
+
+    get imageUrl(): string {
+        return this._imageUrl;
+    }
+
+    get types(): PokemonType[] {
+        return this._types;
+    }
+
+    get stats(): Stat[] {
+        return this._stats;
+    }
+
+    get cryUrl(): string {
+        return this._cryUrl;
+    }
+}
+
 /**
  * EXERCICI 3: class DetailedPokemon
+ *
+ *
+ *
  *
  * Classe FILLA. Pokémon amb totes les dades de la targeta de detall.
  * Ha d'HEREDAR de BasePokemon

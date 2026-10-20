@@ -98,8 +98,45 @@ export class BasePokemon {
  *   get url: retorna l'atribut privat corresponent.
  *   get formattedId: retorna l'atribut id en format "#025" (3 xifres, amb zeros a l'esquerra. Pista: padStart).
  */
+class DetailedPokemon extends BasePokemon {
+    _weightKg;
+    _imageUrl;
+    _types;
+    _stats;
+    _cryUrl;
+    constructor(data, url) {
+        super({ name: data.name, url });
+        this._weightKg = data.weight / 10;
+        this._imageUrl = data.sprites.front_default || "";
+        this._types = data.types
+            .map((t) => Object.hasOwn(POKEMON_TYPES, t.type.name)
+            ? POKEMON_TYPES[t.type.name]
+            : undefined)
+            .filter((type) => type !== undefined);
+        this._stats = data.stats.map((s) => [s.stat.name, s.base_stat]);
+        this._cryUrl = data.cries?.latest || "";
+    }
+    get weightKg() {
+        return this._weightKg;
+    }
+    get imageUrl() {
+        return this._imageUrl;
+    }
+    get types() {
+        return this._types;
+    }
+    get stats() {
+        return this._stats;
+    }
+    get cryUrl() {
+        return this._cryUrl;
+    }
+}
 /**
  * EXERCICI 3: class DetailedPokemon
+ *
+ *
+ *
  *
  * Classe FILLA. Pokémon amb totes les dades de la targeta de detall.
  * Ha d'HEREDAR de BasePokemon
