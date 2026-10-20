@@ -1,0 +1,385 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --gb-darkest: #0f380f;
+    --gb-dark: #306230;
+    --gb-light: #8b956d;
+    --gb-lightest: #e0f8cf;
+    --font-retro: 'Press Start 2P', 'VT323', monospace;
+}
+
+body {
+    font-family: var(--font-retro);
+    background-color: #9bbc0f;
+    color: var(--gb-darkest);
+    padding: 20px;
+    line-height: 1.5;
+    -webkit-font-smoothing: none;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeSpeed;
+}
+
+:focus-visible {
+    outline: 3px dashed var(--gb-darkest);
+    outline-offset: 2px;
+}
+
+/* ---------- Estructura general ---------- */
+
+.app-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    background-color: var(--gb-lightest);
+    border: 6px solid var(--gb-darkest);
+    box-shadow: 8px 8px 0 var(--gb-darkest);
+    padding: 20px;
+}
+
+.app-header {
+    border-bottom: 4px solid var(--gb-darkest);
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+.header-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.header-title img {
+    width: 32px;
+    height: 32px;
+    image-rendering: pixelated;
+}
+
+.header-title h1 {
+    font-size: 18px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-left: 12px;
+    margin-right: auto; /* empeny la insígnia "1a Generació" cap a la dreta */
+}
+
+.gen-badge {
+    background-color: var(--gb-darkest);
+    color: var(--gb-lightest);
+    padding: 6px 10px;
+    font-size: 11px;
+}
+
+.controls-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.top-controls {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+/* ---------- Botons ---------- */
+
+.btn-main,
+.btn-type {
+    font-family: var(--font-retro);
+    border: 4px solid var(--gb-darkest);
+    border-radius: 0;
+    cursor: pointer;
+    text-transform: uppercase;
+    box-shadow: 3px 3px 0 var(--gb-darkest);
+    transition: transform .05s, box-shadow .05s;
+    letter-spacing: .5px;
+}
+
+.btn-main:active,
+.btn-type:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0 var(--gb-darkest);
+}
+
+.btn-main {
+    font-size: 11px;
+    background-color: var(--gb-light);
+    color: var(--gb-darkest);
+    padding: 10px 14px;
+}
+
+/* Botons de tipus: el color de fons l'assigna TypeScript (style.backgroundColor) */
+.type-filter-container {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.btn-type {
+    font-size: 10px;
+    padding: 8px 10px;
+    background-color: var(--gb-lightest); /* color per defecte; TypeScript el sobreescriu */
+    color: var(--gb-darkest);
+}
+
+.btn-type:hover {
+    filter: brightness(1.15);
+}
+
+/* Botó seleccionat: com que el fons el posa TypeScript, el marquem amb un contorn */
+.btn-type.active {
+    outline: 3px solid white;
+    outline-offset: -6px;
+    transform: translate(2px, 2px);
+    box-shadow: 3px 3px 0 var(--gb-darkest);
+
+}
+
+/* ---------- Cercador ---------- */
+
+.search-box {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border: 4px solid var(--gb-darkest);
+    padding: 6px 10px;
+    margin-bottom: 12px;
+}
+
+.search-icon {
+    margin-right: 8px;
+    font-size: 14px;
+}
+
+.search-box input {
+    font-family: var(--font-retro);
+    font-size: 12px;
+    border: none;
+    outline: none;
+    width: 100%;
+    background: transparent;
+    color: var(--gb-darkest);
+    letter-spacing: .5px;
+}
+.search-box input::placeholder{
+    color: #bbb;
+}
+.search-box input:focus::placeholder {
+    color: transparent;
+}
+
+.search-box:focus-within {
+    background-color: #fff3a3;
+}
+
+/* ---------- Panells ---------- */
+
+.pokedex-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.panel {
+    background-color: #fff;
+    border: 4px solid var(--gb-darkest);
+    padding: 15px;
+    min-height: 420px;
+    width: 100%;
+}
+
+.detail-panel {
+    position: sticky;
+    top: 20px;
+}
+
+.panel h2 {
+    font-size: 12px;
+    border-bottom: 3px dashed var(--gb-darkest);
+    padding-bottom: 8px;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+}
+
+/* ---------- Llista ---------- */
+
+.pokemon-list {
+    list-style: none;
+    max-height: 420px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding-right: 4px;
+}
+
+.pokemon-list li {
+    font-size: 11px;
+    padding: 10px;
+    border: 2px solid var(--gb-darkest);
+    background-color: var(--gb-lightest);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+}
+
+.pokemon-list li:hover {
+    background-color: var(--gb-light);
+}
+
+.pokemon-list li.active {
+    background-color: var(--gb-darkest);
+    color: var(--gb-lightest);
+}
+
+/* Missatge inicial dins de la llista: no ha de semblar un ítem clicable */
+.pokemon-list li.placeholder {
+    border: none;
+    background: none;
+    cursor: default;
+    pointer-events: none;
+    justify-content: center;
+    text-transform: none;
+}
+
+.placeholder {
+    font-size: 10px;
+    color: var(--gb-dark);
+    padding: 20px 10px;
+    text-align: center;
+}
+
+/* ---------- Targeta de detall ---------- */
+
+.detail-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 12px;
+}
+
+.detail-card img {
+    width: 130px;
+    height: 130px;
+    image-rendering: pixelated;
+    background-color: var(--gb-lightest);
+    border: 4px solid var(--gb-darkest);
+    padding: 8px;
+}
+
+.detail-card h3 {
+    font-size: 14px;
+    text-transform: uppercase;
+    background-color: var(--gb-darkest);
+    color: var(--gb-lightest);
+    width: 100%;
+    padding: 6px 0;
+    letter-spacing: 1px;
+}
+
+.detail-card p {
+    font-size: 11px;
+    width: 100%;
+    text-align: left;
+    border-bottom: 1px dashed var(--gb-light);
+    padding-bottom: 6px;
+    letter-spacing: .5px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    width: 100%;
+    margin-top: 6px;
+}
+
+.stat-box {
+    border: 2px solid var(--gb-darkest);
+    background-color: var(--gb-lightest);
+    padding: 8px 2px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.stat-box span {
+    font-size: 9px;
+    color: var(--gb-dark);
+}
+
+.stat-box strong {
+    font-size: 12px;
+}
+
+.btn-cry {
+    font-family: var(--font-retro);
+    font-size: 10px;
+    text-transform: uppercase;
+    background-color: var(--gb-dark);
+    color: var(--gb-lightest);
+    border: 3px solid var(--gb-darkest);
+    border-radius: 0;
+    box-shadow: 3px 3px 0 var(--gb-darkest);
+    padding: 8px 12px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-cry:hover {
+    background-color: var(--gb-darkest);
+}
+
+.btn-cry:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0 var(--gb-darkest);
+}
+
+/* ---------- Missatges d'estat ---------- */
+
+#status-message {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 3px solid var(--gb-darkest);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+}
+
+#status-message.loading {
+    background-color: #fff3a3;
+}
+
+#status-message.error {
+    background-color: #ff9e9e;
+}
+
+/* ---------- Utilitats i responsive ---------- */
+
+.hidden {
+    display: none !important;
+}
+
+@media (max-width: 768px) {
+    .pokedex-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .detail-panel {
+        position: static;
+    }
+}

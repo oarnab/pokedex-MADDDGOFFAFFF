@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PokéDex Pro - 1a Generació</title>
+  <link rel="icon" href="../img/ball.png">
+  <link rel="stylesheet" href="style.css">
+  <script type="module" src="main.js"></script>
+</head>
+
+<body>
+<div class="app-container">
+  <header class="app-header">
+    <div class="header-title">
+      <img src="../img/ball.png" alt="PokéDex Pro"/>
+      <h1>PokéDex Pro - 1a Gen</h1>
+      <span class="gen-badge">PLANTILLA v1.0</span>
+    </div>
+
+    <div class="controls-wrapper">
+      <div class="top-controls">
+        <button id="btn-show-all" class="btn-main">
+          <span aria-hidden="true">🌐</span> Carregar 151 Pokémon
+        </button>
+      </div>
+
+      <!--
+      EXERCICI 4: Botons de filtre per tipus
+      <div id="type-filter-container" class="type-filter-container"></div>
+      -->
+
+    </div>
+  </header>
+
+  <!-- Missatges d'estat (càrrega o error) -->
+  <div id="status-message" class="hidden" role="status"></div>
+
+  <!-- Layout principal de dos panells -->
+  <main class="pokedex-layout">
+
+    <!-- PANELL ESQUERRE: llista de noms -->
+    <section class="panel list-panel">
+      <h2>Llista de Pokémon</h2>
+
+      <!--
+      EXERCICI 2: Filtrat de la llista de pokemons per nom o id
+      <div class="search-box">
+        <span class="search-icon" aria-hidden="true">🔍</span>
+        <input type="text" id="search-input" placeholder="Filtra per nom o ID..." aria-label="Filtra per nom o ID" autocomplete="off">
+      </div>
+     -->
+
+      <ul id="pokemon-list" class="pokemon-list">
+        <li class="placeholder">Fes clic al botó superior per carregar la llista.</li>
+      </ul>
+    </section>
+
+    <!-- PANELL DRET: detall del Pokémon seleccionat -->
+    <section class="panel detail-panel">
+      <h2>Detall del Pokémon</h2>
+      <div id="pokemon-detail">
+        <p class="placeholder">Selecciona un Pokémon de la llista per veure les seves dades.</p>
+      </div>
+    </section>
+
+  </main>
+</div>
+</body>
+</html>
