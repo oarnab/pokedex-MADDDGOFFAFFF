@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "module": "ES2022",
+    "target": "ES2024",
+    "sourceMap": true,
+    "strict": true,
+    "rootDir": "./",
+    "moduleDetection": "force",
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}
