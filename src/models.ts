@@ -119,9 +119,9 @@ export const POKEMON_TYPES: Record<PokemonTypeName, PokemonType> = {
 // ==========================================================
 
 export class BasePokemon{
-    public readonly _id: number;
-    public readonly _name: string;
-    public readonly _url: string;
+    private _id: number;
+    private _name: string;
+    private _url: string;
 
     constructor(item: IPokeApiListItem) {
         this._id = Number(item.url.split("/")[1]);
