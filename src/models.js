@@ -52,6 +52,32 @@ export const POKEMON_TYPES = {
 //    Els getters ja tenen signatura i retornen un valor provisional
 //    perquè el projecte compili. Substitueix-los per la implementació real.
 // ==========================================================
+export class BasePokemon {
+    _id;
+    _name;
+    _url;
+    constructor(item) {
+        this._id = Number(item.url.split("/")[1]);
+        this._name = item.name;
+        this._url = item.url;
+    }
+    get id() {
+        return this._id;
+    }
+    get name() {
+        return this._name;
+    }
+    get url() {
+        return this._url;
+    }
+    get formattedId() {
+        return "#" + String(this._id).padStart(3, "0");
+    }
+    get displayName() {
+        const temp = String(this._name);
+        return temp.charAt(0).toUpperCase() + temp.slice(1);
+    }
+}
 /**
  * EXERCICI 1: class BasePokemon  -> És la classe PARE. Representa un Pokémon de la llista general.
  *
