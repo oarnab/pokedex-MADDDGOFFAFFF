@@ -84,7 +84,7 @@ export class PokemonType {
 // tots 17 tipus i evitarà l'ús de cadenes de text (strings) arbitràries.
 //
 // Nota PokeFans: La PokéAPI retorna els tipus ACTUALS: alguns Pokémon de
-// la 1a gen ara són de tipus "fairy" (Clefairy) o "steel" (Magnemite).
+// la 1a gen ara són de tipus "fairy" (Clefairy) o "stfeel" (Magnemite).
 // Per això el diccionari té 17 tipus i no 15.
 // ==========================================================
 
@@ -118,6 +118,38 @@ export const POKEMON_TYPES: Record<PokemonTypeName, PokemonType> = {
 //    perquè el projecte compili. Substitueix-los per la implementació real.
 // ==========================================================
 
+export class BasePokemon{
+    public readonly _id: number;
+    public readonly _name: string;
+    public readonly _url: string;
+
+    constructor(item: IPokeApiListItem) {
+        this._id = Number(item.url.split("/")[1]);
+        this._name = item.name;
+        this._url = item.url;
+    }
+
+    get id(): number{
+        return this._id;
+    }
+
+    get name(): string{
+        return this._name;
+    }
+
+    get url(): string {
+        return this._url;
+    }
+
+    get formattedId(): string {
+        return "#" + String(this._id).padStart(3, "0");
+    }
+
+    get displayName(): string{
+        const temp = String(this._name);
+        return temp.charAt(0).toUpperCase() + temp.slice(1);
+    }
+}
 /**
  * EXERCICI 1: class BasePokemon  -> És la classe PARE. Representa un Pokémon de la llista general.
  *
