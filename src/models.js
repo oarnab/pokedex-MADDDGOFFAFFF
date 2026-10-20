@@ -98,7 +98,7 @@ export class BasePokemon {
  *   get url: retorna l'atribut privat corresponent.
  *   get formattedId: retorna l'atribut id en format "#025" (3 xifres, amb zeros a l'esquerra. Pista: padStart).
  */
-class DetailedPokemon extends BasePokemon {
+export class DetailedPokemon extends BasePokemon {
     _weightKg;
     _imageUrl;
     _types;

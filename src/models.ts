@@ -174,7 +174,7 @@ export class BasePokemon{
 
 
 
-class DetailedPokemon extends BasePokemon{
+export class DetailedPokemon extends BasePokemon{
     private _weightKg : number;
     private _imageUrl: string;
     private _types: PokemonType[];
