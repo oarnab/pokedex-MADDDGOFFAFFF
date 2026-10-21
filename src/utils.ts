@@ -130,8 +130,47 @@ export function renderitzarLlistaNoms(llista: Models.BasePokemon[]) {
  *  - Un cop pintat l'HTML, afegeix el listener de clic al botó i crida reproduirCrit().
  */
 
-// TODO: Implementa la lògica de l'exercici 3 seguint els requisits
+function renderitzarDetallCard(pokemon: Models.DetailedPokemon){
+    const divPare:HTMLDivElement = document.createElement("div");
+    const img:HTMLImageElement = document.createElement("img");
+    const nomPokemon: HTMLHeadElement = document.createElement("h3");
+    const pes : HTMLParagraphElement = document.createElement("p");
+    const tipus : HTMLParagraphElement = document.createElement("p");
+    const divStatsGrid:HTMLDivElement = document.createElement("div");
 
+    divPare.classList.add("detail-card");
+
+    nomPokemon.innerHTML=pokemon.displayName;
+    divPare.appendChild(nomPokemon);
+
+    img.alt = pokemon.name;
+    divPare.appendChild(img);
+
+    if(pokemon.cryUrl){
+        const button:HTMLButtonElement = document.createElement("button");
+        button.classList.add("btn-cry");
+        button.addEventListener("click",()=>reproduirCrit(pokemon.cryUrl));
+        button.innerHTML="🔊 Escolta el crit";
+        divPare.appendChild(button);
+    }
+
+    pes.innerHTML = "<strong> Pes: </strong> "+ pokemon.weightKg + " kg";
+    divPare.appendChild(pes);
+
+    const tipusText = pokemon.types.map(type => `${type.icon} ${type.name}`).join(",")
+    tipus.innerHTML = "<strong> Tipus: </strong> "+ tipusText;
+    divPare.appendChild(tipus);
+
+    divStatsGrid.classList.add("stats-grid");
+    divPare.appendChild(divStatsGrid);
+
+    for (const [name,value] of pokemon.stats){
+        let tipus = document.createElement("div");
+        tipus.classList.add("stat-box");
+        tipus.innerHTML='<span>'+name+'</span><strong>'+value+'</strong>';
+        divStatsGrid.appendChild(tipus);
+    }
+}
 
 /**
  * EXERCICI 4
