@@ -41,6 +41,40 @@ async function carregarLlistaPokemon() {
 // EXERCICI 3: Detall del Pokémon, cache i crit
 // ==========================================================
 // TODO: Implementa la lògica de l'exercici 3 seguint els requisits
+const cachePokemon = new Map();
+const ulPokemonList = document.getElementById("pokemon-list");
+ulPokemonList.addEventListener("click", (event) => {
+    const target = event.target;
+    const li = target.closest("li");
+    if (li == null) {
+        return;
+    }
+    const id = Number(li.dataset.id);
+    const pokemon = mapaPokemon.get(id);
+    if (!pokemon) {
+        return;
+    }
+    Utils.marcarItemActiu(li);
+    void carregarDetallPokemon(id, pokemon.url);
+});
+async function carregarDetallPokemon(id, url) {
+    try {
+        let pokemon = cachePokemon.get(id);
+        if (pokemon === undefined) {
+            Utils.mostrarEstat("Carregant el Pokemon", "loading");
+            const resposta = await fetch(url);
+            const dades = await resposta.json();
+            pokemon = new Models.DetailedPokemon(dades, url);
+            cachePokemon.set(id, pokemon);
+        }
+        Utils.renderitzarDetallCard(pokemon);
+        Utils.amagarEstat();
+    }
+    catch (error) {
+        Utils.mostrarEstat("No s'ha pogut carregar el Pokémon.", "error");
+        console.error(error);
+    }
+}
 // ==========================================================
 // EXERCICI 4: Botons de filtre per tipus
 // ==========================================================

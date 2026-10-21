@@ -115,7 +115,41 @@ export function renderitzarLlistaNoms(llista) {
  *  - El botó del crit només s'ha de pintar si pokemon.cryUrl no és null.
  *  - Un cop pintat l'HTML, afegeix el listener de clic al botó i crida reproduirCrit().
  */
-// TODO: Implementa la lògica de l'exercici 3 seguint els requisits
+export function renderitzarDetallCard(pokemon) {
+    const divPare = document.createElement("div");
+    const img = document.createElement("img");
+    const nomPokemon = document.createElement("h3");
+    const pes = document.createElement("p");
+    const tipus = document.createElement("p");
+    const divStatsGrid = document.createElement("div");
+    divPare.classList.add("detail-card");
+    nomPokemon.innerHTML = pokemon.displayName;
+    divPare.appendChild(nomPokemon);
+    img.alt = pokemon.name;
+    img.src = pokemon.imageUrl;
+    divPare.appendChild(img);
+    if (pokemon.cryUrl) {
+        const button = document.createElement("button");
+        button.classList.add("btn-cry");
+        button.addEventListener("click", () => reproduirCrit(pokemon.cryUrl));
+        button.innerHTML = "🔊 Escolta el crit";
+        divPare.appendChild(button);
+    }
+    pes.innerHTML = "<strong> Pes: </strong> " + pokemon.weightKg + " kg";
+    divPare.appendChild(pes);
+    const tipusText = pokemon.types.map(type => `${type.icon} ${type.name}`).join(",");
+    tipus.innerHTML = "<strong> Tipus: </strong> " + tipusText;
+    divPare.appendChild(tipus);
+    divStatsGrid.classList.add("stats-grid");
+    divPare.appendChild(divStatsGrid);
+    for (const [name, value] of pokemon.stats) {
+        let tipus = document.createElement("div");
+        tipus.classList.add("stat-box");
+        tipus.innerHTML = '<span>' + name + '</span><strong>' + value + '</strong>';
+        divStatsGrid.appendChild(tipus);
+    }
+    document.getElementById("pokemon-detail")?.replaceChildren(divPare);
+}
 /**
  * EXERCICI 4
  * Genera un botó per a cada tipus dins de <div id="type-filter-container">.

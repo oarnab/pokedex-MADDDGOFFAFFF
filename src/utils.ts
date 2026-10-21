@@ -130,7 +130,7 @@ export function renderitzarLlistaNoms(llista: Models.BasePokemon[]) {
  *  - Un cop pintat l'HTML, afegeix el listener de clic al botó i crida reproduirCrit().
  */
 
-function renderitzarDetallCard(pokemon: Models.DetailedPokemon){
+export function renderitzarDetallCard(pokemon: Models.DetailedPokemon){
     const divPare:HTMLDivElement = document.createElement("div");
     const img:HTMLImageElement = document.createElement("img");
     const nomPokemon: HTMLHeadElement = document.createElement("h3");
@@ -144,6 +144,7 @@ function renderitzarDetallCard(pokemon: Models.DetailedPokemon){
     divPare.appendChild(nomPokemon);
 
     img.alt = pokemon.name;
+    img.src = pokemon.imageUrl;
     divPare.appendChild(img);
 
     if(pokemon.cryUrl){
@@ -170,6 +171,8 @@ function renderitzarDetallCard(pokemon: Models.DetailedPokemon){
         tipus.innerHTML='<span>'+name+'</span><strong>'+value+'</strong>';
         divStatsGrid.appendChild(tipus);
     }
+
+    document.getElementById("pokemon-detail")?.replaceChildren(divPare);
 }
 
 /**

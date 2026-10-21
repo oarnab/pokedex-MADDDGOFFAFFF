@@ -1,5 +1,7 @@
 import * as Models from "./models.js";
 import * as Utils from "./utils.js";
+import {marcarItemActiu} from "./utils.js";
+import {DetailedPokemon} from "./models.js";
 // ==========================================================
 // EXERCICI 1: Llistar els 151 Pokémon
 // ==========================================================
@@ -48,7 +50,48 @@ async function carregarLlistaPokemon(): Promise<void> {
 // EXERCICI 3: Detall del Pokémon, cache i crit
 // ==========================================================
 // TODO: Implementa la lògica de l'exercici 3 seguint els requisits
+const cachePokemon = new Map<number, Models.DetailedPokemon>();
+const ulPokemonList = document.getElementById("pokemon-list") as HTMLUListElement;
 
+ulPokemonList.addEventListener("click", (event) => {
+    const target : HTMLElement= event.target as HTMLElement;
+    const li = target.closest("li");
+    if (li == null){
+        return;
+    }
+    const id = Number(li.dataset.id);
+    const pokemon = mapaPokemon.get(id);
+    if (!pokemon){
+        return;
+    }
+    Utils.marcarItemActiu(li);
+    void carregarDetallPokemon(id, pokemon.url);
+});
+
+
+async function carregarDetallPokemon(id: number, url: string): Promise<void>{
+    try {
+        let pokemon: DetailedPokemon | undefined = cachePokemon.get(id);
+        if (pokemon === undefined) {
+            Utils.mostrarEstat("Carregant el Pokemon", "loading");
+
+            const resposta = await fetch(url);
+            const dades = await resposta.json() as Models.IPokeApiDetail;
+
+            pokemon = new Models.DetailedPokemon(dades, url);
+            cachePokemon.set(id, pokemon);
+        }
+
+        Utils.renderitzarDetallCard(pokemon);
+        Utils.amagarEstat();
+    } catch (error: unknown) {
+        Utils.mostrarEstat(
+            "No s'ha pogut carregar el Pokémon.",
+            "error"
+        );
+        console.error(error);
+    }
+}
 
 
 // ==========================================================
