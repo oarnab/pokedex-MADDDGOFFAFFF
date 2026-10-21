@@ -8,6 +8,7 @@ const btnCarregarPokemon = document.getElementById("btn-show-all");
 btnCarregarPokemon?.addEventListener("click", carregarLlistaPokemon);
 async function carregarLlistaPokemon() {
     try {
+        Utils.netejarCercador();
         Utils.mostrarEstat("S'estan carregant els pokemons", "loading");
         const resposta = await fetch("https://pokeapi.co/api/v2/pokemon?limit=151");
         if (!resposta.ok) {
@@ -23,9 +24,10 @@ async function carregarLlistaPokemon() {
     }
     catch (error) {
         if (error instanceof Error) {
-            console.error("Error:", error.message);
+            Utils.mostrarEstat("Error: " + error.message, "error");
         }
         else {
+            Utils.mostrarEstat("S'ha produït un error desconegut.", "error");
             console.error("S'ha produït un error desconegut.");
         }
     }
@@ -36,7 +38,29 @@ async function carregarLlistaPokemon() {
 // ==========================================================
 // EXERCICI 2: Cercador en temps real
 // ==========================================================
-// TODO: Implementa la lògica de l'exercici 2 seguint els requisits
+export function filtrarLlistaNoms() {
+    const input = document.getElementById("search-input");
+    const items = document.querySelectorAll("#pokemon-list li");
+    if (!input)
+        return;
+    const cerca = input.value.trim().toLowerCase();
+    items.forEach((el) => {
+        let coincideix = false;
+        const id = el.getAttribute("data-id");
+        const nom = el.textContent?.split(" - ").pop()?.toLowerCase() ?? "";
+        if (cerca == "") {
+            coincideix = true;
+        }
+        else if (cerca == id) {
+            coincideix = true;
+        }
+        else if (nom.includes(cerca)) {
+            coincideix = true;
+        }
+        el.classList.toggle("hidden", !coincideix);
+    });
+}
+document.getElementById("search-input")?.addEventListener("input", filtrarLlistaNoms);
 // ==========================================================
 // EXERCICI 3: Detall del Pokémon, cache i crit
 // ==========================================================

@@ -29,8 +29,9 @@ async function carregarLlistaPokemon(): Promise<void> {
         Utils.renderitzarLlistaNoms(Array.from(mapaPokemon.values()));
     }catch ( error: unknown ){
         if (error instanceof Error) {
-            console.error("Error:", error.message);
+            Utils.mostrarEstat("Error: " + error.message, "error");
         } else {
+            Utils.mostrarEstat("S'ha produït un error desconegut.", "error");
             console.error("S'ha produït un error desconegut.");
         }
     } finally {
