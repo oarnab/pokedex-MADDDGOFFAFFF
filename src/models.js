@@ -57,7 +57,7 @@ export class BasePokemon {
     _name;
     _url;
     constructor(item) {
-        this._id = Number(item.url.split("/")[1]);
+        this._id = Number(item.url.split("/").filter(Boolean).pop());
         this._name = item.name;
         this._url = item.url;
     }

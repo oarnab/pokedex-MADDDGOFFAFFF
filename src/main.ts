@@ -1,9 +1,41 @@
+import * as Models from "./models.js";
+import * as Utils from "./utils.js";
 // ==========================================================
 // EXERCICI 1: Llistar els 151 Pokémon
 // ==========================================================
-// TODO: Implementa la lògica de l'exercici 1 seguint els requisits
+const mapaPokemon = new Map<number, Models.BasePokemon>();
 
+const btnCarregarPokemon = document.getElementById("btn-show-all");
+btnCarregarPokemon?.addEventListener("click", carregarLlistaPokemon);
 
+async function carregarLlistaPokemon(): Promise<void> {
+    try {
+        Utils.mostrarEstat("S'estan carregant els pokemons", "loading");
+        const resposta = await fetch(
+            "https://pokeapi.co/api/v2/pokemon?limit=151"
+        );
+        if (!resposta.ok) {
+            throw new Error(
+                `Error HTTP: ${resposta.status}`
+            );
+        }
+        const dades = await resposta.json() as Models.IPokeApiListResponse;
+        dades.results.forEach((pokemon: Models.IPokeApiListItem) => {
+            const model = new Models.BasePokemon(pokemon);
+            mapaPokemon.set(model.id, model);
+        });
+        Utils.amagarEstat();
+        Utils.renderitzarLlistaNoms(Array.from(mapaPokemon.values()));
+    }catch ( error: unknown ){
+        if (error instanceof Error) {
+            console.error("Error:", error.message);
+        } else {
+            console.error("S'ha produït un error desconegut.");
+        }
+    } finally {
+        console.log("Procés finalitzat.");
+    }
+}
 
 // ==========================================================
 // EXERCICI 2: Cercador en temps real
