@@ -94,9 +94,19 @@ export function reproduirCrit(soundUrl: string): void {
  *    (usa els getters formattedId i name).
  *  - Afegir el <li> al contenidor amb appendChild.
  */
-// TODO: Implementa la lògica de l'exercici 1 seguint els requisits
+export function renderitzarLlistaNoms(llista: Models.BasePokemon[]) {
+    const contenidor = document.getElementById("pokemon-list");
+    if (!contenidor) return;
 
+    contenidor.innerHTML = "";
 
+    llista.forEach((pokemon) => {
+        const li = document.createElement("li");
+        li.setAttribute("data-id", String(pokemon.id));
+        li.innerHTML = `<strong>${pokemon.formattedId}</strong> - ${pokemon.name}`;
+        contenidor.appendChild(li);
+    });
+}
 /**
  * EXERCICI 3
  * Renderitza la targeta de detall dins de <div id="pokemon-detail">.
