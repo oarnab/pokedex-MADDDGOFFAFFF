@@ -53,7 +53,7 @@ export function filtrarLlistaNoms() {
         else if (cerca == id) {
             coincideix = true;
         }
-        else if (cerca.includes(nom)) {
+        else if (nom.includes(cerca)) {
             coincideix = true;
         }
         el.classList.toggle("hidden", !coincideix);
