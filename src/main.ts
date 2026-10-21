@@ -1,7 +1,5 @@
 import * as Models from "./models.js";
 import * as Utils from "./utils.js";
-import {marcarItemActiu} from "./utils.js";
-import {DetailedPokemon} from "./models.js";
 // ==========================================================
 // EXERCICI 1: Llistar els 151 Pokémon
 // ==========================================================
@@ -12,6 +10,7 @@ btnCarregarPokemon?.addEventListener("click", carregarLlistaPokemon);
 
 async function carregarLlistaPokemon(): Promise<void> {
     try {
+        Utils.netejarCercador()
         Utils.mostrarEstat("S'estan carregant els pokemons", "loading");
         const resposta = await fetch(
             "https://pokeapi.co/api/v2/pokemon?limit=151"
@@ -42,7 +41,30 @@ async function carregarLlistaPokemon(): Promise<void> {
 // ==========================================================
 // EXERCICI 2: Cercador en temps real
 // ==========================================================
-// TODO: Implementa la lògica de l'exercici 2 seguint els requisits
+export function filtrarLlistaNoms(): void {
+    const input = document.getElementById("search-input") as HTMLInputElement | null;
+    const items = document.querySelectorAll<HTMLLIElement>("#pokemon-list li");
+
+    if (!input) return;
+    const cerca = input.value.trim().toLowerCase();
+
+
+    items.forEach((el: HTMLLIElement) => {
+        let coincideix = false;
+        const id: string | null = el.getAttribute("data-id");
+        const nom = el.textContent?.split(" - ").pop()?.toLowerCase() ?? "";
+
+        if(cerca == ""){
+            coincideix = true;
+        }else if(cerca == id){
+            coincideix = true;
+        }else if(cerca.includes(nom)) {
+            coincideix = true;
+        }
+        el.classList.toggle("hidden", !coincideix);
+    });
+}
+document.getElementById("search-input")?.addEventListener("input", filtrarLlistaNoms);
 
 
 
@@ -71,7 +93,7 @@ ulPokemonList.addEventListener("click", (event) => {
 
 async function carregarDetallPokemon(id: number, url: string): Promise<void>{
     try {
-        let pokemon: DetailedPokemon | undefined = cachePokemon.get(id);
+        let pokemon: Models.DetailedPokemon | undefined = cachePokemon.get(id);
         if (pokemon === undefined) {
             Utils.mostrarEstat("Carregant el Pokemon", "loading");
 
