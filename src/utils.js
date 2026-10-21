@@ -1,3 +1,4 @@
+import * as Models from "./models.js";
 // ==========================================================
 // PART A: FUNCIONS JA IMPLEMENTADES (no cal modificar-les)
 // ==========================================================
@@ -145,7 +146,7 @@ export function renderitzarDetallCard(pokemon) {
     for (const [name, value] of pokemon.stats) {
         let tipus = document.createElement("div");
         tipus.classList.add("stat-box");
-        tipus.innerHTML = '<span>' + name + '</span><strong>' + value + '</strong>';
+        tipus.innerHTML = '<span>' + name.toUpperCase() + '</span><strong>' + value + '</strong>';
         divStatsGrid.appendChild(tipus);
     }
     document.getElementById("pokemon-detail")?.replaceChildren(divPare);
@@ -164,5 +165,16 @@ export function renderitzarDetallCard(pokemon) {
  *       btn.textContent = el label del tipus
  *  - Recorda afegir el botó correctament al contenidor
  */
-// TODO: Implementa la lògica de l'exercici 4 seguint els requisits
+export function generarBotonsTipus() {
+    const contenidorPare = document.getElementById("type-filter-container");
+    contenidorPare.innerHTML = "";
+    for (let type of Object.values(Models.POKEMON_TYPES)) {
+        const btn = document.createElement("button");
+        btn.classList.add("btn-type");
+        btn.dataset.type = type.id;
+        btn.style.backgroundColor = type.color;
+        btn.textContent = type.label;
+        contenidorPare.appendChild(btn);
+    }
+}
 //# sourceMappingURL=utils.js.map

@@ -130,7 +130,7 @@ export function renderitzarLlistaNoms(llista: Models.BasePokemon[]) {
  *  - Un cop pintat l'HTML, afegeix el listener de clic al botó i crida reproduirCrit().
  */
 
-export function renderitzarDetallCard(pokemon: Models.DetailedPokemon){
+export function renderitzarDetallCard(pokemon: Models.DetailedPokemon) : void{
     const divPare:HTMLDivElement = document.createElement("div");
     const img:HTMLImageElement = document.createElement("img");
     const nomPokemon: HTMLHeadElement = document.createElement("h3");
@@ -168,7 +168,7 @@ export function renderitzarDetallCard(pokemon: Models.DetailedPokemon){
     for (const [name,value] of pokemon.stats){
         let tipus = document.createElement("div");
         tipus.classList.add("stat-box");
-        tipus.innerHTML='<span>'+name+'</span><strong>'+value+'</strong>';
+        tipus.innerHTML='<span>'+name.toUpperCase()+'</span><strong>'+value+'</strong>';
         divStatsGrid.appendChild(tipus);
     }
 
@@ -190,6 +190,20 @@ export function renderitzarDetallCard(pokemon: Models.DetailedPokemon){
  *  - Recorda afegir el botó correctament al contenidor
  */
 
-// TODO: Implementa la lògica de l'exercici 4 seguint els requisits
+
+export function generarBotonsTipus():void{
+    const contenidorPare : HTMLDivElement = document.getElementById("type-filter-container") as HTMLDivElement;
+    contenidorPare.innerHTML="";
+    for (let type of Object.values(Models.POKEMON_TYPES)){
+        const btn : HTMLButtonElement = document.createElement("button");
+        btn.classList.add("btn-type")
+        btn.dataset.type = type.id;
+        btn.style.backgroundColor = type.color;
+        btn.textContent = type.label;
+        contenidorPare.appendChild(btn);
+    }
+
+
+}
 
 

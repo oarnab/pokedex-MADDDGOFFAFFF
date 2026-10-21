@@ -119,8 +119,7 @@ async function carregarDetallPokemon(id: number, url: string): Promise<void>{
 // ==========================================================
 // EXERCICI 4: Botons de filtre per tipus
 // ==========================================================
-// TODO: Implementa la lògica de l'exercici 4 seguint els requisits
-
+Utils.generarBotonsTipus()
 
 
 // ==========================================================
