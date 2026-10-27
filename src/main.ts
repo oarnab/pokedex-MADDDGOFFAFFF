@@ -5,7 +5,7 @@ import * as Utils from "./utils.js";
 // ==========================================================
 const mapaPokemon = new Map<number, Models.BasePokemon>();
 
-const btnCarregarPokemon = document.getElementById("btn-show-all");
+const btnCarregarPokemon = document.getElementById("btn-show-all") as HTMLButtonElement;
 btnCarregarPokemon?.addEventListener("click", carregarLlistaPokemon);
 
 async function carregarLlistaPokemon(): Promise<void> {
@@ -47,10 +47,10 @@ export function filtrarLlistaNoms(): void {
     const cercaNumerica = cerca !== "" && !Number.isNaN(Number(cerca));
 
 
-    items.forEach((el: HTMLLIElement) => {
-        let coincideix = false;
+    items.forEach((el: HTMLLIElement):void => {
+        let coincideix:boolean = false;
         const id: string | null = el.getAttribute("data-id");
-        const nom = el.textContent?.split(" - ").pop()?.toLowerCase() ?? "";
+        const nom:string = el.textContent?.split(" - ").pop()?.toLowerCase() ?? "";
 
         if(cerca == ""){
             coincideix = true;
@@ -69,18 +69,17 @@ document.getElementById("search-input")?.addEventListener("input", filtrarLlista
 // ==========================================================
 // EXERCICI 3: Detall del Pokémon, cache i crit
 // ==========================================================
-// TODO: Implementa la lògica de l'exercici 3 seguint els requisits
 const cachePokemon = new Map<number, Models.DetailedPokemon>();
 const ulPokemonList = document.getElementById("pokemon-list") as HTMLUListElement;
 
-ulPokemonList.addEventListener("click", (event) => {
+ulPokemonList.addEventListener("click", (event):void => {
     const target : HTMLElement= event.target as HTMLElement;
-    const li = target.closest("li");
+    const li:HTMLLIElement | null = target.closest("li");
     if (li == null){
         return;
     }
-    const id = Number(li.dataset.id);
-    const pokemon = mapaPokemon.get(id);
+    const id :number= Number(li.dataset.id);
+    const pokemon : Models.BasePokemon | undefined = mapaPokemon.get(id);
     if (!pokemon){
         return;
     }
@@ -95,7 +94,7 @@ async function carregarDetallPokemon(id: number, url: string): Promise<void>{
         if (pokemon === undefined) {
             Utils.mostrarEstat("Carregant el Pokemon", "loading");
 
-            const resposta = await fetch(url);
+            const resposta:Response = await fetch(url);
             const dades = await resposta.json() as Models.IPokeApiDetail;
 
             pokemon = new Models.DetailedPokemon(dades, url);
@@ -120,4 +119,81 @@ Utils.generarBotonsTipus()
 // ==========================================================
 // EXERCICI 5: Filtrar la llista per tipus
 // ==========================================================
-// TODO: Implementa la lògica de l'exercici 5 seguint els requisits
+
+const containerElementTipus = document.getElementById("type-filter-container") as HTMLDivElement;
+
+
+async function carregarPokemonPerTipus(tipus: string): Promise<void> {
+    try {
+        Utils.mostrarEstat("Carregant Pokemons per tipus....", "loading");
+        const resposta: Response = await fetch(`https://pokeapi.co/api/v2/type/${tipus}`);
+        if (!resposta.ok) {
+            throw new Error(`Error HTTP: ${resposta.status}`);
+        }
+        const dades = await resposta.json() as Models.IPokeApiTypeResponse;
+
+        const pokemons: Models.BasePokemon[] = [];
+        for (const slot of dades.pokemon) {
+            const p = new Models.BasePokemon(slot.pokemon);
+            if (p.id <= 151) {
+                pokemons.push(p);
+                mapaPokemon.set(p.id, p);
+            }
+        }
+
+        Utils.renderitzarLlistaNoms(pokemons);
+        Utils.netejarCercador();
+        Utils.netejarDetallCard();
+        Utils.amagarEstat();
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            Utils.mostrarEstat("Error: " + error.message, "error");
+        } else {
+            Utils.mostrarEstat("Error desconegut.", "error");
+        }
+    }
+}
+
+async function mostrarTotsPokemon(): Promise<void> {
+    if (mapaPokemon.size < 151) {
+        await carregarLlistaPokemon();
+        return;
+    }
+    Utils.renderitzarLlistaNoms(Array.from(mapaPokemon.values()));
+    Utils.netejarCercador();
+    Utils.netejarDetallCard();
+    Utils.amagarEstat();
+}
+
+btnCarregarPokemon?.addEventListener("click",()=>{
+    for (const boto of containerElementTipus.children) {
+        boto.classList.remove("active");
+    }
+});
+
+containerElementTipus.addEventListener("click", (event) => {
+    const target: HTMLElement = event.target as HTMLElement;
+    const btn: HTMLButtonElement | null = target.closest("button");
+    if (!btn) {
+        return;
+    }
+    const tipus: string | undefined = btn.dataset.type;
+    if (!tipus) {
+        return;
+    }
+
+    if (btn.classList.contains("active")) {
+        btn.classList.remove("active");
+        void mostrarTotsPokemon();
+        return;
+    }
+
+    for (const boto of containerElementTipus.children) {
+        boto.classList.remove("active");
+    }
+    btn.classList.add("active");
+    void carregarPokemonPerTipus(tipus);
+});
+
+
+

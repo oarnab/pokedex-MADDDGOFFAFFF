@@ -65,7 +65,6 @@ document.getElementById("search-input")?.addEventListener("input", filtrarLlista
 // ==========================================================
 // EXERCICI 3: Detall del Pokémon, cache i crit
 // ==========================================================
-// TODO: Implementa la lògica de l'exercici 3 seguint els requisits
 const cachePokemon = new Map();
 const ulPokemonList = document.getElementById("pokemon-list");
 ulPokemonList.addEventListener("click", (event) => {
@@ -107,5 +106,71 @@ Utils.generarBotonsTipus();
 // ==========================================================
 // EXERCICI 5: Filtrar la llista per tipus
 // ==========================================================
-// TODO: Implementa la lògica de l'exercici 5 seguint els requisits
+const containerElementTipus = document.getElementById("type-filter-container");
+async function carregarPokemonPerTipus(tipus) {
+    try {
+        Utils.mostrarEstat("Carregant Pokemons per tipus....", "loading");
+        const resposta = await fetch(`https://pokeapi.co/api/v2/type/${tipus}`);
+        if (!resposta.ok) {
+            throw new Error(`Error HTTP: ${resposta.status}`);
+        }
+        const dades = await resposta.json();
+        const pokemons = [];
+        for (const slot of dades.pokemon) {
+            const p = new Models.BasePokemon(slot.pokemon);
+            if (p.id <= 151) {
+                pokemons.push(p);
+                mapaPokemon.set(p.id, p);
+            }
+        }
+        Utils.renderitzarLlistaNoms(pokemons);
+        Utils.netejarCercador();
+        Utils.netejarDetallCard();
+        Utils.amagarEstat();
+    }
+    catch (error) {
+        if (error instanceof Error) {
+            Utils.mostrarEstat("Error: " + error.message, "error");
+        }
+        else {
+            Utils.mostrarEstat("Error desconegut.", "error");
+        }
+    }
+}
+async function mostrarTotsPokemon() {
+    if (mapaPokemon.size < 151) {
+        await carregarLlistaPokemon();
+        return;
+    }
+    Utils.renderitzarLlistaNoms(Array.from(mapaPokemon.values()));
+    Utils.netejarCercador();
+    Utils.netejarDetallCard();
+    Utils.amagarEstat();
+}
+btnCarregarPokemon?.addEventListener("click", () => {
+    for (const boto of containerElementTipus.children) {
+        boto.classList.remove("active");
+    }
+});
+containerElementTipus.addEventListener("click", (event) => {
+    const target = event.target;
+    const btn = target.closest("button");
+    if (!btn) {
+        return;
+    }
+    const tipus = btn.dataset.type;
+    if (!tipus) {
+        return;
+    }
+    if (btn.classList.contains("active")) {
+        btn.classList.remove("active");
+        void mostrarTotsPokemon();
+        return;
+    }
+    for (const boto of containerElementTipus.children) {
+        boto.classList.remove("active");
+    }
+    btn.classList.add("active");
+    void carregarPokemonPerTipus(tipus);
+});
 //# sourceMappingURL=main.js.map
