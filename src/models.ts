@@ -179,7 +179,7 @@ export class DetailedPokemon extends BasePokemon{
     private _imageUrl: string;
     private _types: PokemonType[];
     private _stats : Stat[];
-    private _cryUrl : string;
+    private _cryUrl : string | null;
 
 
     constructor(data: IPokeApiDetail, url: string) {
@@ -192,7 +192,7 @@ export class DetailedPokemon extends BasePokemon{
                 : undefined)
             .filter((type): type is PokemonType => type !== undefined);
         this._stats = data.stats.map((s): Stat => [s.stat.name, s.base_stat]);
-        this._cryUrl = data.cries?.latest || "";
+        this._cryUrl = data.cries?.latest || null;
     }
 
 
@@ -212,7 +212,7 @@ export class DetailedPokemon extends BasePokemon{
         return this._stats;
     }
 
-    get cryUrl(): string {
+    get cryUrl(): string | null {
         return this._cryUrl;
     }
 }

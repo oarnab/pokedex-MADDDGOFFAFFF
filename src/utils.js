@@ -89,8 +89,10 @@ export function renderitzarLlistaNoms(llista) {
     contenidor.innerHTML = "";
     llista.forEach((pokemon) => {
         const li = document.createElement("li");
-        li.setAttribute("data-id", String(pokemon.id));
-        li.innerHTML = `<strong>${pokemon.formattedId}</strong> - ${pokemon.name}`;
+        li.dataset.id = String(pokemon.id);
+        li.dataset.name = pokemon.name;
+        li.dataset.url = pokemon.url;
+        li.innerHTML = `<strong>${pokemon.formattedId}</strong> - ${pokemon.displayName}`;
         contenidor.appendChild(li);
     });
 }
@@ -124,15 +126,16 @@ export function renderitzarDetallCard(pokemon) {
     const tipus = document.createElement("p");
     const divStatsGrid = document.createElement("div");
     divPare.classList.add("detail-card");
-    nomPokemon.innerHTML = pokemon.displayName;
+    nomPokemon.textContent = `${pokemon.formattedId} ${pokemon.displayName}`;
     divPare.appendChild(nomPokemon);
     img.alt = pokemon.name;
     img.src = pokemon.imageUrl;
     divPare.appendChild(img);
-    if (pokemon.cryUrl) {
+    const cryUrl = pokemon.cryUrl;
+    if (cryUrl) {
         const button = document.createElement("button");
         button.classList.add("btn-cry");
-        button.addEventListener("click", () => reproduirCrit(pokemon.cryUrl));
+        button.addEventListener("click", () => reproduirCrit(cryUrl));
         button.innerHTML = "🔊 Escolta el crit";
         divPare.appendChild(button);
     }

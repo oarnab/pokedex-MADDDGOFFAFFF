@@ -114,7 +114,7 @@ export class DetailedPokemon extends BasePokemon {
             : undefined)
             .filter((type) => type !== undefined);
         this._stats = data.stats.map((s) => [s.stat.name, s.base_stat]);
-        this._cryUrl = data.cries?.latest || "";
+        this._cryUrl = data.cries?.latest || null;
     }
     get weightKg() {
         return this._weightKg;

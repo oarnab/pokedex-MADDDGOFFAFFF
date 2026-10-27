@@ -17,6 +17,7 @@ async function carregarLlistaPokemon(): Promise<void> {
             throw new Error(`Error HTTP: ${resposta.status}`);
         }
         const dades = await resposta.json() as Models.IPokeApiListResponse;
+        mapaPokemon.clear();
         dades.results.forEach((pokemon: Models.IPokeApiListItem) => {
             const model = new Models.BasePokemon(pokemon);
             mapaPokemon.set(model.id, model);
@@ -95,6 +96,9 @@ async function carregarDetallPokemon(id: number, url: string): Promise<void>{
             Utils.mostrarEstat("Carregant el Pokemon", "loading");
 
             const resposta:Response = await fetch(url);
+            if (!resposta.ok) {
+                throw new Error(`Error HTTP: ${resposta.status}`);
+            }
             const dades = await resposta.json() as Models.IPokeApiDetail;
 
             pokemon = new Models.DetailedPokemon(dades, url);

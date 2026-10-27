@@ -15,6 +15,7 @@ async function carregarLlistaPokemon() {
             throw new Error(`Error HTTP: ${resposta.status}`);
         }
         const dades = await resposta.json();
+        mapaPokemon.clear();
         dades.results.forEach((pokemon) => {
             const model = new Models.BasePokemon(pokemon);
             mapaPokemon.set(model.id, model);
@@ -87,6 +88,9 @@ async function carregarDetallPokemon(id, url) {
         if (pokemon === undefined) {
             Utils.mostrarEstat("Carregant el Pokemon", "loading");
             const resposta = await fetch(url);
+            if (!resposta.ok) {
+                throw new Error(`Error HTTP: ${resposta.status}`);
+            }
             const dades = await resposta.json();
             pokemon = new Models.DetailedPokemon(dades, url);
             cachePokemon.set(id, pokemon);

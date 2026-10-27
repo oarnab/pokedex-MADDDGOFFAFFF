@@ -102,8 +102,10 @@ export function renderitzarLlistaNoms(llista: Models.BasePokemon[]) {
 
     llista.forEach((pokemon) => {
         const li = document.createElement("li");
-        li.setAttribute("data-id", String(pokemon.id));
-        li.innerHTML = `<strong>${pokemon.formattedId}</strong> - ${pokemon.name}`;
+        li.dataset.id = String(pokemon.id);
+        li.dataset.name = pokemon.name;
+        li.dataset.url = pokemon.url;
+        li.innerHTML = `<strong>${pokemon.formattedId}</strong> - ${pokemon.displayName}`;
         contenidor.appendChild(li);
     });
 }
@@ -133,24 +135,25 @@ export function renderitzarLlistaNoms(llista: Models.BasePokemon[]) {
 export function renderitzarDetallCard(pokemon: Models.DetailedPokemon) : void{
     const divPare:HTMLDivElement = document.createElement("div");
     const img:HTMLImageElement = document.createElement("img");
-    const nomPokemon: HTMLHeadElement = document.createElement("h3");
+    const nomPokemon: HTMLHeadingElement = document.createElement("h3");
     const pes : HTMLParagraphElement = document.createElement("p");
     const tipus : HTMLParagraphElement = document.createElement("p");
     const divStatsGrid:HTMLDivElement = document.createElement("div");
 
     divPare.classList.add("detail-card");
 
-    nomPokemon.innerHTML=pokemon.displayName;
+    nomPokemon.textContent = `${pokemon.formattedId} ${pokemon.displayName}`;
     divPare.appendChild(nomPokemon);
 
     img.alt = pokemon.name;
     img.src = pokemon.imageUrl;
     divPare.appendChild(img);
 
-    if(pokemon.cryUrl){
+    const cryUrl = pokemon.cryUrl;
+    if(cryUrl){
         const button:HTMLButtonElement = document.createElement("button");
         button.classList.add("btn-cry");
-        button.addEventListener("click",()=>reproduirCrit(pokemon.cryUrl));
+        button.addEventListener("click",()=>reproduirCrit(cryUrl));
         button.innerHTML="🔊 Escolta el crit";
         divPare.appendChild(button);
     }
