@@ -48,6 +48,7 @@ export function filtrarLlistaNoms(): void {
 
     if (!input) return;
     const cerca = input.value.trim().toLowerCase();
+    const cercaNumerica = cerca !== "" && !Number.isNaN(Number(cerca));
 
 
     items.forEach((el: HTMLLIElement) => {
@@ -57,8 +58,8 @@ export function filtrarLlistaNoms(): void {
 
         if(cerca == ""){
             coincideix = true;
-        }else if(cerca == id){
-            coincideix = true;
+        }else if(cercaNumerica){
+            coincideix = id !== null && Number(cerca) === Number(id);
         }else if(nom.includes(cerca)) {
             coincideix = true;
         }
