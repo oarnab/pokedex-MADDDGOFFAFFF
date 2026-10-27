@@ -105,10 +105,7 @@ async function carregarDetallPokemon(id: number, url: string): Promise<void>{
         Utils.renderitzarDetallCard(pokemon);
         Utils.amagarEstat();
     } catch (error: unknown) {
-        Utils.mostrarEstat(
-            "No s'ha pogut carregar el Pokémon.",
-            "error"
-        );
+        Utils.mostrarEstat("No s'ha pogut carregar el Pokémon.", "error");
         console.error(error);
     }
 }
