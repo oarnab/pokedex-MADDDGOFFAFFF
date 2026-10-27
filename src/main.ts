@@ -12,13 +12,9 @@ async function carregarLlistaPokemon(): Promise<void> {
     try {
         Utils.netejarCercador()
         Utils.mostrarEstat("S'estan carregant els pokemons", "loading");
-        const resposta = await fetch(
-            "https://pokeapi.co/api/v2/pokemon?limit=151"
-        );
+        const resposta = await fetch("https://pokeapi.co/api/v2/pokemon?limit=151");
         if (!resposta.ok) {
-            throw new Error(
-                `Error HTTP: ${resposta.status}`
-            );
+            throw new Error(`Error HTTP: ${resposta.status}`);
         }
         const dades = await resposta.json() as Models.IPokeApiListResponse;
         dades.results.forEach((pokemon: Models.IPokeApiListItem) => {
